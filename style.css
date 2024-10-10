@@ -1,3 +1,7 @@
+* { 
+  background-color: black;
+  color: white;
+}
 .update-controller { 
   display: none;
 }
