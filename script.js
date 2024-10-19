@@ -64,6 +64,17 @@ function activateSaveListeners() {
   });
 }
 
+function activateCancelListeners () { 
+    const cancelBtn = document.querySelectorAll(".cancelBtn")
+    const updateController = document.querySelectorAll(".updateController")
+    const inputs = document.querySelectorAll(".input-controller textarea")
+    cancelBtn.forEach((cb, i)=> { 
+        updateController[i].style.display = "none"
+        inputs[i].disabled = true;
+        
+    })
+}
+
 function updateItem(text, i) {
   itemsArray[i] = text;
   localStorage.setItem("items", JSON.stringify(itemsArray));
