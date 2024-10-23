@@ -4,6 +4,15 @@ const itemsArray = localStorage.getItem("items")
 
 console.log(itemsArray);
 
+const form = document.querySelector('form')
+
+form.addEventListener('keypress', function (e) { 
+  if(e.keycode === 13) { 
+    e.preventDefault();
+    form.submit();
+  }
+});
+
 document.querySelector("#enter").addEventListener("click", () => {
   const item = document.querySelector("#item");
   createItem(item);
@@ -64,15 +73,14 @@ function activateSaveListeners() {
   });
 }
 
-function activateCancelListeners () { 
-    const cancelBtn = document.querySelectorAll(".cancelBtn")
-    const updateController = document.querySelectorAll(".updateController")
-    const inputs = document.querySelectorAll(".input-controller textarea")
-    cancelBtn.forEach((cb, i)=> { 
-        updateController[i].style.display = "none"
-        inputs[i].disabled = true;
-        
-    })
+function activateCancelListeners() {
+  const cancelBtn = document.querySelectorAll(".cancelBtn");
+  const updateController = document.querySelectorAll(".updateController");
+  const inputs = document.querySelectorAll(".input-controller textarea");
+  cancelBtn.forEach((cb, i) => {
+    updateController[i].style.display = "none";
+    inputs[i].disabled = true;
+  });
 }
 
 function updateItem(text, i) {
