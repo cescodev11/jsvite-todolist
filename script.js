@@ -4,10 +4,10 @@ const itemsArray = localStorage.getItem("items")
 
 console.log(itemsArray);
 
-const form = document.querySelector('form')
+const form = document.querySelector("form");
 
-form.addEventListener('keypress', function (e) { 
-  if(e.keycode === 13) { 
+form.addEventListener("keypress", function (e) {
+  if (e.keycode === 13) {
     e.preventDefault();
     form.submit();
   }
