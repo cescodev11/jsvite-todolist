@@ -5,34 +5,42 @@ const itemsArray = localStorage.getItem("items")
 console.log(itemsArray);
 
 const form = document.querySelector("form");
+const itemInput = document.querySelector("#item");
+const errorMessage = document.createElement("p");
+errorMessage.textContent = "Please enter a task!";
+errorMessage.style.color = "red";
+errorMessage.style.display = "none";
+form.appendChild(errorMessage);
 
 form.addEventListener("keypress", function (e) {
-  if (e.keycode === 13) {
+  if (e.key === "Enter") {
     e.preventDefault();
-    form.submit();
+    document.querySelector("#enter").click();
   }
 });
 
 document.querySelector("#enter").addEventListener("click", () => {
-  const item = document.querySelector("#item");
-  createItem(item);
+  if (itemInput.value.trim() === "") {
+    showError();
+  } else {
+    createItem(itemInput);
+  }
 });
 
 function displayItems() {
   let items = "";
   for (let i = 0; i < itemsArray.length; i++) {
-    items += ` <div class="item">
+    items += `<div class="item">
       <div class="input-controller">
-            <textarea disabled>${itemsArray[i]}</textarea>
-            <div class="edit-controller">
-              <i class="fa-solid fa-check deleteBtn"></i>
-              <i class="fa-solid fa-pen-to-square editBtn"></i>
-            </div>
+        <textarea disabled>${itemsArray[i]}</textarea>
+        <div class="edit-controller">
+          <i class="fa-solid fa-check deleteBtn"></i>
+          <i class="fa-solid fa-pen-to-square editBtn"></i>
+        </div>
       </div>
       <div class="update-controller">
         <button class="saveBtn">Save</button>
         <button class="cancelBtn">Cancel</button>
-
       </div>
     </div>`;
   }
@@ -40,46 +48,68 @@ function displayItems() {
   activateDeleteListeners();
   activateEditListeners();
   activateSaveListeners();
-  //   activateCancelListeners()
+  activateCancelListeners();
+}
+
+function showError() {
+  errorMessage.style.display = "block";
+}
+
+function hideError() {
+  errorMessage.style.display = "none";
+}
+
+function activateCancelListeners() {
+  const cancelBtn = document.querySelectorAll(".cancelBtn");
+  const updateController = document.querySelectorAll(".update-controller");
+  const inputs = document.querySelectorAll(".input-controller textarea");
+  cancelBtn.forEach((cB, i) => {
+    cB.addEventListener("click", () => {
+      updateController[i].style.display = "none";
+      inputs[i].disabled = true;
+      inputs[i].style.border = "none";
+    });
+  });
+}
+
+function createItem(item) {
+  itemsArray.push(item.value);
+  localStorage.setItem("items", JSON.stringify(itemsArray));
+  item.value = "";
+  hideError();
+  displayItems();
 }
 
 function activateDeleteListeners() {
-  let deleteBtn = document.querySelectorAll(".deleteBtn");
-  deleteBtn.forEach((db, i) => {
+  const deleteBtns = document.querySelectorAll(".deleteBtn");
+  deleteBtns.forEach((db, i) => {
     db.addEventListener("click", () => {
       deleteItem(i);
     });
   });
 }
+
 function activateEditListeners() {
-  const editBtn = document.querySelectorAll(".editBtn");
-  const updateController = document.querySelectorAll(".update-controller");
+  const editBtns = document.querySelectorAll(".editBtn");
+  const updateControllers = document.querySelectorAll(".update-controller");
   const inputs = document.querySelectorAll(".input-controller textarea");
-  editBtn.forEach((eb, i) => {
+
+  editBtns.forEach((eb, i) => {
     eb.addEventListener("click", () => {
-      updateController[i].style.display = "block";
+      updateControllers[i].style.display = "block";
       inputs[i].disabled = false;
     });
   });
 }
 
 function activateSaveListeners() {
-  const saveBtn = document.querySelectorAll(".saveBtn");
+  const saveBtns = document.querySelectorAll(".saveBtn");
   const inputs = document.querySelectorAll(".input-controller textarea");
-  saveBtn.forEach((sb, i) => {
+
+  saveBtns.forEach((sb, i) => {
     sb.addEventListener("click", () => {
       updateItem(inputs[i].value, i);
     });
-  });
-}
-
-function activateCancelListeners() {
-  const cancelBtn = document.querySelectorAll(".cancelBtn");
-  const updateController = document.querySelectorAll(".updateController");
-  const inputs = document.querySelectorAll(".input-controller textarea");
-  cancelBtn.forEach((cb, i) => {
-    updateController[i].style.display = "none";
-    inputs[i].disabled = true;
   });
 }
 
@@ -95,17 +125,12 @@ function deleteItem(i) {
   location.reload();
 }
 
-function createItem(item) {
-  itemsArray.push(item.value);
-  localStorage.setItem("items", JSON.stringify(itemsArray));
-  location.reload();
-}
-
 function displayDate() {
   let date = new Date();
   date = date.toString().split(" ");
-  document.querySelector("#date").innerHTML =
-    date[1] + " " + date[2] + " " + date[3];
+  document.querySelector(
+    "#date"
+  ).innerHTML = `${date[1]} ${date[2]} ${date[3]}`;
 }
 
 window.onload = function () {
