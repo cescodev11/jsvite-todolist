@@ -9,24 +9,22 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-
-    <title>Vite App</title>
+    <title>Day 2 Day List</title>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/script.js"></script>
     <main class="app">
-      <h1>Day 2 Day List</h1>
+      <h1 class="title">Day 2 Day List</h1>
       <div class="input-header">
-        <h1><span id="date"></span></h1>
+        <h2 class="date"><span id="date"></span></h2>
         <form class="to-do-input">
           <input type="text" id="item" placeholder="Enter a Task..." />
-          <button class= "enterButton" id="enter">Enter</button>
+          <button class="enterButton" id="enter">Enter</button>
           <p id="error" class="hidden">Please Enter a Task!</p>
         </form>
       </div>
-
       <div class="to-do-list"></div>
     </main>
+    <script type="module" src="/script.js"></script>
   </body>
 </html>

@@ -52,7 +52,7 @@ function displayItems() {
 }
 
 function showError() {
-  errorMessage.style.display = "block";
+  window.alert(errorMessage.textContent);
 }
 
 function hideError() {
@@ -132,8 +132,20 @@ function displayDate() {
     "#date"
   ).innerHTML = `${date[1]} ${date[2]} ${date[3]}`;
 }
+function filterOldTasks() {
+  const todayDate = new Date().toISOString().split("T")[0];
+  const lastCleanupDate = localStorage.getItem("lastCleanupDate");
+
+  // Run cleanup only if today's date is different from the last cleanup date
+  if (lastCleanupDate !== todayDate) {
+    const filteredArray = itemsArray.filter((item) => item.date === todayDate);
+    localStorage.setItem("items", JSON.stringify(filteredArray));
+    localStorage.setItem("lastCleanupDate", todayDate); // Update the last cleanup date
+  }
+}
 
 window.onload = function () {
+  filterOldTasks();
   displayDate();
   displayItems();
 };
